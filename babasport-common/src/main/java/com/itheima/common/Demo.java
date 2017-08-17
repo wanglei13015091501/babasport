@@ -6,7 +6,7 @@ public class Demo {
 		System.out.println("02");
 		System.out.println("02");
 		System.out.println("02");
-		System.out.println("00");
+		System.out.println("066");
 		System.out.println("00");
 		System.out.println("00");
 		System.out.println("00");
