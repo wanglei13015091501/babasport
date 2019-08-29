@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.core.dao.order.OrderDao" >
+  <resultMap id="BaseResultMap" type="Order" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="deliver_fee" jdbcType="REAL" javaType="java.lang.Float" />
+      <arg column="total_price" jdbcType="REAL" javaType="java.lang.Float" />
+      <arg column="order_price" jdbcType="REAL" javaType="java.lang.Float" />
+      <arg column="payment_way" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="payment_cash" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="delivery" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="is_confirm" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="is_paiy" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="order_state" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="note" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="buyer_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, deliver_fee, total_price, order_price, payment_way, payment_cash, delivery, is_confirm, 
+    is_paiy, order_state, create_date, note, buyer_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="Order" >
+    insert into order (id, deliver_fee, total_price, 
+      order_price, payment_way, payment_cash, 
+      delivery, is_confirm, is_paiy, order_state, 
+      create_date, note, buyer_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{deliverFee,jdbcType=REAL}, #{totalPrice,jdbcType=REAL}, 
+      #{orderPrice,jdbcType=REAL}, #{paymentWay,jdbcType=BIT}, #{paymentCash,jdbcType=BIT}, 
+      #{delivery,jdbcType=BIT}, #{isConfirm,jdbcType=BIT}, #{isPaiy,jdbcType=BIT}, #{orderState,jdbcType=BIT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}, #{buyerId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="Order" >
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deliverFee != null" >
+        deliver_fee,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="paymentWay != null" >
+        payment_way,
+      </if>
+      <if test="paymentCash != null" >
+        payment_cash,
+      </if>
+      <if test="delivery != null" >
+        delivery,
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm,
+      </if>
+      <if test="isPaiy != null" >
+        is_paiy,
+      </if>
+      <if test="orderState != null" >
+        order_state,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="buyerId != null" >
+        buyer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="deliverFee != null" >
+        #{deliverFee,jdbcType=REAL},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=REAL},
+      </if>
+      <if test="paymentWay != null" >
+        #{paymentWay,jdbcType=BIT},
+      </if>
+      <if test="paymentCash != null" >
+        #{paymentCash,jdbcType=BIT},
+      </if>
+      <if test="delivery != null" >
+        #{delivery,jdbcType=BIT},
+      </if>
+      <if test="isConfirm != null" >
+        #{isConfirm,jdbcType=BIT},
+      </if>
+      <if test="isPaiy != null" >
+        #{isPaiy,jdbcType=BIT},
+      </if>
+      <if test="orderState != null" >
+        #{orderState,jdbcType=BIT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        #{buyerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Order" >
+    update order
+    <set >
+      <if test="deliverFee != null" >
+        deliver_fee = #{deliverFee,jdbcType=REAL},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=REAL},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=REAL},
+      </if>
+      <if test="paymentWay != null" >
+        payment_way = #{paymentWay,jdbcType=BIT},
+      </if>
+      <if test="paymentCash != null" >
+        payment_cash = #{paymentCash,jdbcType=BIT},
+      </if>
+      <if test="delivery != null" >
+        delivery = #{delivery,jdbcType=BIT},
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm = #{isConfirm,jdbcType=BIT},
+      </if>
+      <if test="isPaiy != null" >
+        is_paiy = #{isPaiy,jdbcType=BIT},
+      </if>
+      <if test="orderState != null" >
+        order_state = #{orderState,jdbcType=BIT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        buyer_id = #{buyerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="Order" >
+    update order
+    set deliver_fee = #{deliverFee,jdbcType=REAL},
+      total_price = #{totalPrice,jdbcType=REAL},
+      order_price = #{orderPrice,jdbcType=REAL},
+      payment_way = #{paymentWay,jdbcType=BIT},
+      payment_cash = #{paymentCash,jdbcType=BIT},
+      delivery = #{delivery,jdbcType=BIT},
+      is_confirm = #{isConfirm,jdbcType=BIT},
+      is_paiy = #{isPaiy,jdbcType=BIT},
+      order_state = #{orderState,jdbcType=BIT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
