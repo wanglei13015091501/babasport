@@ -35,6 +35,12 @@ public class Product implements Serializable {
 
     private String imgUrl;
 
+    private Float price;
+
+    public  String[] getImages(){
+        return imgUrl.split(",");
+    }
+
 
     public Product(Long id, Long brandId, String name, Float weight, Boolean isNew, Boolean isHot, Boolean isCommend, Boolean isShow, Boolean isDel, String description, String packageList, String colors, String sizes, Date createTime, String imgUrl) {
         this.id = id;
@@ -197,5 +203,13 @@ public class Product implements Serializable {
                 ", createTime=" + createTime +
                 ", imgUrl='" + imgUrl + '\'' +
                 '}';
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }
