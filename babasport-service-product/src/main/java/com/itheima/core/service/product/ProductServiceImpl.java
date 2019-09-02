@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false,propagation = Propagation.SUPPORTS)
     public void isShow(Long[] ids) throws IOException, SolrServerException {
         Product product = new Product();
         product.setIsShow(true);
@@ -148,6 +148,7 @@ public class ProductServiceImpl implements ProductService {
             Product p = productDao.selectByPrimaryKey(id);
 
             SolrInputDocument doc = new SolrInputDocument();
+            doc.setField("id",id);
             doc.setField("name_ik",p.getName());
             doc.setField("brandId",p.getBrandId());
 
@@ -168,10 +169,22 @@ public class ProductServiceImpl implements ProductService {
 
             List<Sku> skus = skuDao.selectByExample(skuQuery);
             doc.setField("price",skus.get(0).getPrice());
+            doc.setField("last_modified", new Date());
 
             solrServer.add(doc);
             solrServer.commit();
             //静态化
         }
+    }
+
+    @Override
+    public Product selectProductById(Long productId) {
+        return productDao.selectByPrimaryKey(productId);
+    }
+
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.SUPPORTS)
+    public void updateProduct(Product product) {
+        productDao.updateByPrimaryKey(product);
     }
 }

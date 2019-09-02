@@ -21,6 +21,7 @@ public class ProductController {
     @RequestMapping(value = "/search")
     public String search(Integer pageNo, String keyword, Model model) throws Exception {
         Pagination pagination = solrService.selectPaginationByQuery(pageNo,keyword);
+        model.addAttribute("keyword",keyword);
         model.addAttribute("pagination",pagination);
         return "search";
     }

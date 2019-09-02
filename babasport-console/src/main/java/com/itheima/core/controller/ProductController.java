@@ -79,9 +79,45 @@ public class ProductController {
         return "redirect:/product/list.do";
     }
 
+    /**
+     * 上架
+     * @param ids
+     * @return
+     * @throws IOException
+     * @throws SolrServerException
+     */
     @RequestMapping("/product/isShow.do")
     public String isShow(Long[] ids) throws IOException, SolrServerException {
         productService.isShow(ids);
         return "forward:/product/list.do";
+    }
+
+    /**
+     * 去往编辑页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/product/toEdit.do")
+    public String toEdit(Long id,Model model){
+        Product product = productService.selectProductById(id);
+        List<Brand> brands = brandService.selectBrandListByQuery(null,1);
+        List<Color> colors = colorService.selectColoList();
+        model.addAttribute("product",product);
+        model.addAttribute("brands",brands);
+        model.addAttribute("colors",colors);
+        return "product/edit";
+    }
+
+    /**
+     * 编辑商品
+     * @param product
+     * @param model
+     * @return
+     */
+    @RequestMapping("/product/edit.do")
+    public String edit(Product product,Model model){
+        productService.updateProduct(product);
+        return "product/edit";
     }
 }

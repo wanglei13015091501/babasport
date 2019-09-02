@@ -40,7 +40,7 @@
 			</div>
 			<i class="crumbs-arrow">&gt;</i>
 			<div class="crumbs-nav-item">
-				<strong class="search-key">"瑜伽服"</strong>
+				<strong class="search-key">${keyword}</strong>
 			</div>
 			<c:if test="${fn:length(map) != 0 }">
 			<div class="sl-b-selected J_brandSelected">

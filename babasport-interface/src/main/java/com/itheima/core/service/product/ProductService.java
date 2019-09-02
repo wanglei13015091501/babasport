@@ -19,4 +19,8 @@ public interface ProductService {
     void insertProduct(Product product);
 
     void isShow(Long[] ids) throws IOException, SolrServerException;
+
+    Product selectProductById(Long productId);
+
+    void updateProduct(Product product);
 }
