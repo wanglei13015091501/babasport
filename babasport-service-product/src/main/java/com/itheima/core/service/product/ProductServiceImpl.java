@@ -1,5 +1,6 @@
 package com.itheima.core.service.product;
 
+import com.google.common.collect.Lists;
 import com.itheima.common.page.Pagination;
 import com.itheima.common.redis.RedisUtil;
 import com.itheima.core.dao.product.ProductDao;
@@ -185,6 +186,44 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = false,propagation = Propagation.SUPPORTS)
     public void updateProduct(Product product) {
+        product.setCreateTime(new Date());
         productDao.updateByPrimaryKey(product);
+
+        //删除原有的sku数据
+        SkuQuery skuQuery = new SkuQuery();
+        skuQuery.createCriteria().andProductIdEqualTo(product.getId());
+
+        skuDao.deleteByExample(skuQuery);
+
+        //重新保存SKU 库存表数据
+        List<Sku> list = Lists.newArrayList();
+        for (String color : product.getColors().split(",")) {
+            for (String size : product.getSizes().split(",")) {
+                Sku sku = new Sku();
+                //商品ID
+                sku.setProductId(product.getId());
+                //颜色ID
+                sku.setColorId(Long.parseLong(color));
+                //尺码
+                sku.setSize(size);
+                //市场价
+                sku.setMarketPrice(0f);
+                //售价
+                sku.setPrice(0f);
+                //运费
+                sku.setDeliveFee(10f);
+                //库存
+                sku.setStock(0);
+                //购买的限购
+                sku.setUpperLimit(200);
+
+                //时间
+                sku.setCreateTime(new Date());
+                //保存
+                list.add(sku);
+            }
+        }
+
+        skuDao.insertForeach(list);
     }
 }

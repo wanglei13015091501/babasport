@@ -20,4 +20,10 @@ public interface SkuDao {
     int updateByPrimaryKey(Sku record);
 
     List<Sku> selectByExample(SkuQuery skuQuery);
+
+    int deleteByProductId(Long id);
+
+    void deleteByExample(SkuQuery skuQuery);
+
+    int insertForeach(List<Sku> list);
 }

@@ -86,7 +86,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from bbs_sku
+    from sku
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -100,21 +100,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     id,product_id,color_id,size,market_price,price,delive_fee,stock,upper_limit,create_time
-    from bbs_sku
+    from sku
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from bbs_sku
+    delete from sku
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.itheima.core.pojo.product.SkuQuery" >
-    delete from bbs_sku
+    delete from sku
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.itheima.core.pojo.product.Sku" >
-    insert into bbs_sku (id, product_id, color_id,
+    insert into sku (id, product_id, color_id,
     size, market_price, price,
     delive_fee, stock, upper_limit,
     create_time)
@@ -124,7 +124,7 @@
     #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.itheima.core.pojo.product.Sku" >
-    insert into bbs_sku
+    insert into sku
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -190,14 +190,35 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertForeach" parameterType="java.util.List" useGeneratedKeys="false">
+    insert into sku (id, product_id, color_id,
+    size, market_price, price,
+    delive_fee, stock, upper_limit,
+    create_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+          #{item.id,jdbcType=BIGINT},
+          #{item.productId,jdbcType=BIGINT},
+          #{item.colorId,jdbcType=BIGINT},
+          #{item.size,jdbcType=VARCHAR},
+          #{item.marketPrice,jdbcType=REAL},
+          #{item.price,jdbcType=REAL},
+          #{item.deliveFee,jdbcType=REAL},
+          #{item.stock,jdbcType=INTEGER},
+          #{item.upperLimit,jdbcType=INTEGER},
+          #{item.createTime,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
   <select id="countByExample" parameterType="com.itheima.core.pojo.product.SkuQuery" resultType="java.lang.Integer" >
-    select count(*) from bbs_sku
+    select count(*) from sku
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update bbs_sku
+    update sku
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -235,7 +256,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update bbs_sku
+    update sku
     set id = #{record.id,jdbcType=BIGINT},
     product_id = #{record.productId,jdbcType=BIGINT},
     color_id = #{record.colorId,jdbcType=BIGINT},
@@ -251,7 +272,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.product.Sku" >
-    update bbs_sku
+    update sku
     <set >
       <if test="productId != null" >
         product_id = #{productId,jdbcType=BIGINT},
@@ -284,7 +305,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.product.Sku" >
-    update bbs_sku
+    update sku
     set product_id = #{productId,jdbcType=BIGINT},
     color_id = #{colorId,jdbcType=BIGINT},
     size = #{size,jdbcType=VARCHAR},

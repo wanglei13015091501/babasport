@@ -115,9 +115,9 @@ public class ProductController {
      * @param model
      * @return
      */
-    @RequestMapping("/product/edit.do")
+    @RequestMapping(value = "/product/edit.do")
     public String edit(Product product,Model model){
         productService.updateProduct(product);
-        return "product/edit";
+        return "redirect:/product/list.do";
     }
 }
