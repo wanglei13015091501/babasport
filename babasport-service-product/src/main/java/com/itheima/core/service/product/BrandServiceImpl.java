@@ -1,10 +1,10 @@
 package com.itheima.core.service.product;
 
 import com.itheima.common.page.Pagination;
+import com.itheima.common.redis.RedisUtil;
 import com.itheima.core.dao.product.BrandDao;
 import com.itheima.core.pojo.product.Brand;
 import com.itheima.core.pojo.product.BrandQuery;
-import com.itheima.core.service.product.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +25,9 @@ public class BrandServiceImpl implements BrandService {
 	
 	@Autowired
 	private BrandDao brandDao;
+	@Autowired
+	private RedisUtil redisUtil;
+
 	//查询品牌结果集
 	public List<Brand> selectBrandListByQuery(String name, Integer isDisplay){
 		
@@ -95,10 +98,14 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public void editBrand(Brand brand) {
 		brandDao.editBrand(brand);
+		//修改的同时保存到redis缓存
+		redisUtil.hset("brand",String.valueOf(brand.getId()),brand.getName());
 	}
 
 	@Override
 	public void batchDelete(Long[] ids) {
 		brandDao.batchDelete(ids);
 	}
+
+
 } 

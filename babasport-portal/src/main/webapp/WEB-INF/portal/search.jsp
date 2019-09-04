@@ -65,7 +65,7 @@
 		<div class="sl-value">
 			<div class="sl-v-list">
 				<ul class="J_valueList v-fixed">
-				<c:forEach items="${brands }" var="brand">
+				<c:forEach items="${brandList }" var="brand">
 					<li id="brand-38118" data-initial="j" style="display:block;">
 						<a href="javascript:;" onclick="fqBrand('${brand.id }')" title="${brand.name }"><i></i>${brand.name }</a>
 					</li>

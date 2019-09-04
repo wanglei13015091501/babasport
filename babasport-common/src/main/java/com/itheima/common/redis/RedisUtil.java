@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
+import java.util.Map;
+
 
 /**
  * @Auther: wanglei
@@ -23,7 +25,7 @@ public class RedisUtil {
         ShardedJedis shardedJedis = null;
         try {
             // 从连接池中获取到jedis分片对象
-            shardedJedis = shardedJedisPool.getResource();
+            shardedJedis  = shardedJedisPool.getResource();
             return fun.callBack(shardedJedis);
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,6 +126,24 @@ public class RedisUtil {
             @Override
             public Long callBack(ShardedJedis shardedJedis) {
                 return shardedJedis.incr(key);
+            }
+        });
+    }
+
+    public Long hset(final String key,final String field,final String value){
+        return this.execute(new Function<ShardedJedis,Long>() {
+            @Override
+            public Long callBack(ShardedJedis shardedJedis) {
+                return shardedJedis.hset(key,field,value);
+            }
+        });
+    }
+
+    public Map<String, String> hgetAll(final String key){
+        return this.execute(new Function<ShardedJedis,Map<String,String>>() {
+            @Override
+            public Map<String, String> callBack(ShardedJedis shardedJedis) {
+                return shardedJedis.hgetAll(key);
             }
         });
     }

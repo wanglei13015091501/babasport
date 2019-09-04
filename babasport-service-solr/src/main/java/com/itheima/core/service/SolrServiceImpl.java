@@ -2,6 +2,8 @@ package com.itheima.core.service;
 
 import com.google.common.collect.Lists;
 import com.itheima.common.page.Pagination;
+import com.itheima.common.redis.RedisUtil;
+import com.itheima.core.pojo.product.Brand;
 import com.itheima.core.pojo.product.Product;
 import com.itheima.core.pojo.product.ProductQuery;
 import com.itheima.core.service.solr.SolrService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Auther: wanglei
@@ -27,7 +30,16 @@ import java.util.Map;
 public class SolrServiceImpl implements SolrService {
     @Autowired
     private SolrServer solrServer;
+    @Autowired
+    private RedisUtil redisUtil;
 
+    /**
+     * 根据关键词查询solr指定域中的数据
+     * @param pageNo
+     * @param keyword
+     * @return
+     * @throws Exception
+     */
     public Pagination selectPaginationByQuery(Integer pageNo,String keyword) throws Exception {
         //商品对象Query
         ProductQuery productQuery = new ProductQuery();
@@ -39,6 +51,9 @@ public class SolrServiceImpl implements SolrService {
 
         StringBuilder params = new StringBuilder();
 
+        //设定查询内容
+        solrQuery.setQuery(keyword);
+        //默认查询的域 df default field
         solrQuery.set("df","name_ik");
         //条件
         if(StringUtils.isNotBlank(keyword)){
@@ -52,6 +67,15 @@ public class SolrServiceImpl implements SolrService {
         solrQuery.setSort("price",SolrQuery.ORDER.asc);
         //查询指定的域  field list
         solrQuery.set("fl", "id,name_ik,price,url");
+        //高亮
+        //1.打开高亮的开关
+        solrQuery.setHighlight(true);
+        //2.设置高亮的字段
+        solrQuery.addHighlightField("name_ik");
+        //3.设置高亮的前缀
+        solrQuery.setHighlightSimplePre("<span style='color:red'>");
+        //4.设置高亮的后缀
+        solrQuery.setHighlightSimplePost("</span>");
         //执行查询
         QueryResponse response = solrServer.query(solrQuery);
         //取出高亮数据
@@ -71,7 +95,10 @@ public class SolrServiceImpl implements SolrService {
             product.setId(Long.parseLong(id));
             //商品名称
             String name = (String)doc.get("name_ik");
-            product.setName(name);
+            //取出高亮数据
+            Map<String, List<String>> map = highlighting.get(id);
+            List<String> list = map.get("name_ik");
+            product.setName(list.get(0));
             //价格
             product.setPrice((Float)doc.get("price"));
             //图片URL
@@ -86,4 +113,26 @@ public class SolrServiceImpl implements SolrService {
         pagination.pageView("/Search",params.toString());
         return pagination;
     }
+
+    /**
+     * redis缓存中查询品牌结果集
+     * @return
+     */
+    @Override
+    public List<Brand> selectBrandList() {
+        List<Brand> brandList = Lists.newArrayList();
+        Map<String, String> brandMap = redisUtil.hgetAll("brand");
+        if (brandMap!=null&&!brandMap.isEmpty()){
+            Set<Map.Entry<String, String>> entrySet = brandMap.entrySet();
+            for (Map.Entry<String, String> entry : entrySet) {
+                Brand brand = new Brand();
+                brand.setId(Long.parseLong(entry.getKey()));
+                brand.setName(entry.getValue());
+                brandList.add(brand);
+            }
+        }
+        return  brandList;
+    }
+
+
 }

@@ -29,7 +29,7 @@ function uploadPic(){
 <div class="box-positon">
 	<div class="rpos">当前位置: 品牌管理 - 添加</div>
 	<form class="ropt">
-		<input type="submit" onclick="this.form.action='v_list.shtml';" value="返回列表" class="return-button"/>
+		<input type="submit" onclick="location='${ctx}/brand/list.do'" value="返回列表" class="return-button"/>
 	</form>
 	<div class="clear"></div>
 </div>
@@ -56,7 +56,7 @@ function uploadPic(){
 				<tr>
 					<td width="20%" class="pn-flabel pn-flabel-h"></td>
 						<td width="80%" class="pn-fcontent">
-						<img width="100" height="100" id="allUrl"/>
+						<img width="100" height="100" id="allUrl" src="${brand.imgUrl}"/>
 						<input type="hidden" name="imgUrl" id="imgUrl"/>
 						<input type="file" name="pic" onchange="uploadPic()"/>
 					</td>

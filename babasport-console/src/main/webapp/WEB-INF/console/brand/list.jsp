@@ -73,8 +73,8 @@
 			<td align="center">${brand.id }</td>
 			<td align="center">${brand.name }</td>
 			<td align="center"><img width="40" height="40" src="${brand.imgUrl }"/></td>
-			<td align="center"></td>
-			<td align="center">99</td>
+			<td align="center">${brand.description}</td>
+			<td align="center">${brand.sort}</td>
 			<td align="center">
 				<c:if test="${brand.isDisplay == 1 }">是</c:if>
 				<c:if test="${brand.isDisplay == 0 }">否</c:if>

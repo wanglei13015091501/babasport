@@ -1,6 +1,9 @@
 package com.itheima.core.service.solr;
 
 import com.itheima.common.page.Pagination;
+import com.itheima.core.pojo.product.Brand;
+
+import java.util.List;
 
 /**
  * @Auther: wanglei
@@ -10,5 +13,7 @@ import com.itheima.common.page.Pagination;
  */
 public interface SolrService {
 
-    Pagination selectPaginationByQuery(Integer pageNo, String keyword) throws Exception ;
+    Pagination selectPaginationByQuery(Integer pageNo, String keyword) throws Exception;
+
+    List<Brand> selectBrandList();
 }
