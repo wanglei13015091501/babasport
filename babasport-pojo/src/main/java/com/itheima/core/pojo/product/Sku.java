@@ -23,6 +23,9 @@ public class Sku {
 
     private Date createTime;
 
+    //附加对象
+    private Color color;
+
     public Sku(Long id, Long productId, Long colorId, String size, Float marketPrice, Float price, Float deliveFee, Integer stock, Integer upperLimit, Date createTime) {
         this.id = id;
         this.productId = productId;
@@ -118,5 +121,13 @@ public class Sku {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

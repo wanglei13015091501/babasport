@@ -10,14 +10,17 @@ import com.itheima.core.pojo.product.ProductQuery;
 import com.itheima.core.pojo.product.ProductQuery.Criteria;
 import com.itheima.core.pojo.product.Sku;
 import com.itheima.core.pojo.product.SkuQuery;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     private RedisUtil redisUtil;
 
     @Autowired
-    private SolrServer solrServer;
+    private JmsTemplate jmsTemplate;
 
     @Override
     public Pagination selectProList(Integer pageNo, String name, Long brandId, Boolean isShow) {
@@ -145,35 +148,17 @@ public class ProductServiceImpl implements ProductService {
             //修改商品的状态
             productDao.updateByPrimaryKeySelective(product);
 
-            //solr服务器保存商品信息
-            Product p = productDao.selectByPrimaryKey(id);
+            //不在此处进行solr服务器保存商品信息,而是在service-solr中保存,通过activemq发送消息,service-solr接到消息在保存商品到solr服务器
+            //activemq可以实现分布式各个service之间的服务解耦
+            jmsTemplate.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    return session.createTextMessage(String.valueOf(id));
+                }
+            });
 
-            SolrInputDocument doc = new SolrInputDocument();
-            doc.setField("id",id);
-            doc.setField("name_ik",p.getName());
-            doc.setField("brandId",p.getBrandId());
 
-            doc.setField("url",p.getImgUrl());
 
-            //查询商品关联库存:select price from bbs_sku where product_id = 442 order by price desc limit 1
-            SkuQuery skuQuery = new SkuQuery();
-            //查询字段price
-            skuQuery.setFields("price");
-
-            //product_Id=?
-            skuQuery.createCriteria().andProductIdEqualTo(id);
-            //order by
-            skuQuery.setOrderByClause("price desc");
-            //limit
-            skuQuery.setPageNo(1);
-            skuQuery.setPageSize(1);
-
-            List<Sku> skus = skuDao.selectByExample(skuQuery);
-            doc.setField("price",skus.get(0).getPrice());
-            doc.setField("last_modified", new Date());
-
-            solrServer.add(doc);
-            solrServer.commit();
             //静态化
         }
     }
@@ -224,6 +209,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
+        skuDao.insertForeach(list);
         skuDao.insertForeach(list);
     }
 }

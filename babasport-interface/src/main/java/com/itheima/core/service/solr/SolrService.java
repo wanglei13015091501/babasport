@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface SolrService {
 
-    Pagination selectPaginationByQuery(Integer pageNo, String keyword) throws Exception;
+    Pagination selectPaginationByQuery(Integer pageNo, String keyword,Long brandId,String price) throws Exception;
 
     List<Brand> selectBrandList();
+
+    void insertProductToSolr(Long id) throws Exception;
 }

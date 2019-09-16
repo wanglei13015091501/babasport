@@ -10,6 +10,30 @@
 <link rel="stylesheet" type="text/css" href="/css/base.css" media="all" />
 <link type="text/css" rel="stylesheet" href="/css/search.css">
 <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+<script type="text/javascript">
+	var keyword = '${keyword}';
+	var brandId = '${brandId}';
+	var price = '${price}';
+	//过滤
+	//点击品牌ID==品牌ID
+    function fqBrand(id){
+	  if (''!=price){
+	    location.href="${ctx}/search?keyword="+keyword+"&brandId=" + id+"&price=" +price;
+	  }else{
+		location.href="${ctx}/search?keyword="+keyword+"&brandId="+id;
+      }
+	}
+
+	//点击价格
+	function fqPrice(id){
+	  if (brandId!=''){
+	    location.href="${ctx}/search?keyword="+keyword+"&brandId="+brandId+"&price="+id;
+	  }else{
+        location.href="${ctx}/search?keyword="+keyword+"&price="+id;
+      }
+	}
+
+</script>
 
 </head>
 <body>
@@ -47,7 +71,8 @@
 				<span class="crumbs-arrow">已选条件：</span>
 					<c:forEach items="${map }" var="m">
 						<a title="依琦莲（yiqilian）"  href="javascript:;" class="crumb-select-item">
-							<b>${m.key }：</b><em>${m.value }</em><i></i>
+							<b>${m.key }：</b><em
+						>${m.value }</em><i></i>
 						</a>
 					</c:forEach>
 			</div>
@@ -239,7 +264,7 @@
 		<li data-sku="1711416562" class="gl-item">
 			<div class="gl-i-wrap">
 				<div class="p-img">
-					<a href="javascript:;" onclick="window.open('/product/detail?id=${product.id}')" style="position: relative;">
+					<a href="javascript:;" onclick="window.open('${ctx}/product/detail?id=${product.id}')" style="position: relative;">
 						<img width="220" height="220" class="err-product"  src="${product.images[0]}">
 						<div id="gwd_float_curve_trigger" class="gwd_float_curve_trigger gwd_float_curve_up" style="left: 70px; top: 180px;">
 							<div class="gwd_float_curve_wrapper">

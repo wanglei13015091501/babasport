@@ -54,4 +54,5 @@ public class Color implements Serializable {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl == null ? null : imgUrl.trim();
     }
+
 }

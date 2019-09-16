@@ -3,9 +3,9 @@ package com.itheima.core.service;
 import com.google.common.collect.Lists;
 import com.itheima.common.page.Pagination;
 import com.itheima.common.redis.RedisUtil;
-import com.itheima.core.pojo.product.Brand;
-import com.itheima.core.pojo.product.Product;
-import com.itheima.core.pojo.product.ProductQuery;
+import com.itheima.core.dao.product.ProductDao;
+import com.itheima.core.dao.product.SkuDao;
+import com.itheima.core.pojo.product.*;
 import com.itheima.core.service.solr.SolrService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -13,9 +13,11 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +34,10 @@ public class SolrServiceImpl implements SolrService {
     private SolrServer solrServer;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private ProductDao productDao;
+    @Autowired
+    private SkuDao skuDao;
 
     /**
      * 根据关键词查询solr指定域中的数据
@@ -40,7 +46,7 @@ public class SolrServiceImpl implements SolrService {
      * @return
      * @throws Exception
      */
-    public Pagination selectPaginationByQuery(Integer pageNo,String keyword) throws Exception {
+    public Pagination selectPaginationByQuery(Integer pageNo,String keyword,Long brandId,String price) throws Exception {
         //商品对象Query
         ProductQuery productQuery = new ProductQuery();
         //当前页
@@ -76,6 +82,21 @@ public class SolrServiceImpl implements SolrService {
         solrQuery.setHighlightSimplePre("<span style='color:red'>");
         //4.设置高亮的后缀
         solrQuery.setHighlightSimplePost("</span>");
+        //过滤条件
+        if (brandId!=null){
+            solrQuery.addFilterQuery("brandId:"+brandId);
+            params.append("&brandId=").append(brandId);
+        }
+        //0-99 1600
+        if (StringUtils.isNotBlank(price)){
+            String[] p = price.split("-");
+            if (p.length==2){
+                solrQuery.addFilterQuery("price:["+p[0]+" TO "+p[1]+"]");
+            }else{
+                solrQuery.addFilterQuery("price:["+p[0]+" TO *]");
+            }
+            params.append("&price=").append(price);
+        }
         //执行查询
         QueryResponse response = solrServer.query(solrQuery);
         //取出高亮数据
@@ -134,5 +155,41 @@ public class SolrServiceImpl implements SolrService {
         return  brandList;
     }
 
+    /**
+     * 保存商品信息到solr服务器
+     * @param id
+     */
+    public void insertProductToSolr(Long id) throws Exception {
+        //保存商品信息到solr服务器keyword==商品名称
+        SolrInputDocument doc = new SolrInputDocument();
+        //solr服务器保存商品信息
+        Product p = productDao.selectByPrimaryKey(id);
+        //1.商品ID
+        doc.setField("id",id);
 
+        doc.setField("name_ik",p.getName());
+        doc.setField("brandId",p.getBrandId());
+        doc.setField("url",p.getImgUrl());
+
+        //查询商品关联库存:select price from bbs_sku where product_id = 442 order by price desc limit 1
+        SkuQuery skuQuery = new SkuQuery();
+        //查询字段price
+        skuQuery.setFields("price");
+
+        //product_Id=?
+        skuQuery.createCriteria().andProductIdEqualTo(id);
+        //order by
+        skuQuery.setOrderByClause("price desc");
+        //limit
+        skuQuery.setPageNo(1);
+        skuQuery.setPageSize(1);
+        //获取库存表商品最低价格
+        List<Sku> skus = skuDao.selectByExample(skuQuery);
+        doc.setField("price",skus.get(0).getPrice());
+        doc.setField("last_modified", new Date());
+
+        solrServer.add(doc);
+        solrServer.commit();
+
+    }
 }
