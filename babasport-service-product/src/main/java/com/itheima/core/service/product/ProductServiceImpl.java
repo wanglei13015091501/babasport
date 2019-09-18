@@ -94,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = false,propagation = Propagation.SUPPORTS)
     public void insertProduct(Product product) {
         //数据ID 自增长(全国统一商品ID)
-        Long id = redisUtil.incr("pno");
+        Long id = redisUtil.incr("pno",1L);
         product.setId(id);
 
         //下架
