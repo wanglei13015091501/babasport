@@ -17,13 +17,93 @@
       <arg column="is_del" jdbcType="BIT" javaType="java.lang.Boolean" />
     </constructor>
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, username, password, gender, email, real_name, register_time, province, city, 
-    town, addr, is_del
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, username, password, gender, email, real_name, register_time, province, city,
+      town, addr, is_del
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.user.BuyerQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
     <include refid="Base_Column_List" />
+    from buyer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    id,username,password,gender,email,real_name,register_time,province,city,town,addr,is_del
     from buyer
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -31,17 +111,23 @@
     delete from buyer
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="Buyer" >
-    insert into buyer (id, username, password, 
-      gender, email, real_name, 
-      register_time, province, city, 
+  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.user.BuyerQuery" >
+    delete from buyer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.itheima.core.pojo.user.Buyer" >
+    insert into buyer (id, username, password,
+      gender, email, real_name,
+      register_time, province, city,
       town, addr, is_del)
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
-      #{registerTime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+      #{registerTime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
       #{town,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, #{isDel,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="Buyer" >
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.user.Buyer" >
     insert into buyer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -120,7 +206,75 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="Buyer" >
+  <select id="countByExample" parameterType="com.itheima.core.pojo.user.BuyerQuery" resultType="java.lang.Integer" >
+    select count(*) from buyer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update buyer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registerTime != null" >
+        register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.town != null" >
+        town = #{record.town,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null" >
+        addr = #{record.addr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update buyer
+    set id = #{record.id,jdbcType=BIGINT},
+    username = #{record.username,jdbcType=VARCHAR},
+    password = #{record.password,jdbcType=VARCHAR},
+    gender = #{record.gender,jdbcType=INTEGER},
+    email = #{record.email,jdbcType=VARCHAR},
+    real_name = #{record.realName,jdbcType=VARCHAR},
+    register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+    province = #{record.province,jdbcType=VARCHAR},
+    city = #{record.city,jdbcType=VARCHAR},
+    town = #{record.town,jdbcType=VARCHAR},
+    addr = #{record.addr,jdbcType=VARCHAR},
+    is_del = #{record.isDel,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.user.Buyer" >
     update buyer
     <set >
       <if test="username != null" >
@@ -159,7 +313,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="Buyer" >
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.user.Buyer" >
     update buyer
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

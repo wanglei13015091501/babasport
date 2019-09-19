@@ -1,5 +1,6 @@
 package com.itheima.core.service;
 
+import com.itheima.common.redis.RedisUtil;
 import com.itheima.core.dao.product.ProductDao;
 import com.itheima.core.pojo.product.Product;
 import org.apache.solr.client.solrj.SolrServer;
@@ -27,6 +28,9 @@ public class Test {
     @Autowired
     private SolrServer solrServer;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @org.junit.Test
     public void  testProduct(){
         Product product = productDao.selectByPrimaryKey(1L);
@@ -40,5 +44,13 @@ public class Test {
         doc.setField("name","李晨");
         solrServer.add(doc);
         solrServer.commit();
+    }
+
+    @org.junit.Test
+    public void testRedis(){
+        redisUtil.set("key2","value2");
+        String value = redisUtil.get("key2").toString();
+        redisUtil.delete("key2");
+        System.out.println(value);
     }
 }

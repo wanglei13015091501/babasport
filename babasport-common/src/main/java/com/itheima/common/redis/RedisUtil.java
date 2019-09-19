@@ -24,10 +24,13 @@ import static com.itheima.common.web.Constants.LOCK_PREFIX;
  * @Description: com.itheima.common.redis
  * @version: 1.0
  */
-@Service
+@Service("redisUtil")
 public class RedisUtil {
 
-    @Autowired
+    //必须使用(required = false),在babasport_console中建立springmvc子容器的时候
+    // 因为controller中的依赖注入的service是dubbo容器的代理类,而该代理类中又依赖了其他的bean,
+    // 而在babsport_console的spring容器中并没有注册这个类,所以会注入失败
+    @Autowired(required = false)
     private RedisTemplate redisTemplate;
 
     /**

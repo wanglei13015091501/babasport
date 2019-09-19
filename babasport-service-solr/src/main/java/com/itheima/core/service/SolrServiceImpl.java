@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Auther: wanglei
@@ -141,16 +142,16 @@ public class SolrServiceImpl implements SolrService {
     @Override
     public List<Brand> selectBrandList() {
         List<Brand> brandList = Lists.newArrayList();
-//        Map<String, String> brandMap = redisUtil.hgetAll("brand");
-//        if (brandMap!=null&&!brandMap.isEmpty()){
-//            Set<Map.Entry<String, String>> entrySet = brandMap.entrySet();
-//            for (Map.Entry<String, String> entry : entrySet) {
-//                Brand brand = new Brand();
-//                brand.setId(Long.parseLong(entry.getKey()));
-//                brand.setName(entry.getValue());
-//                brandList.add(brand);
-//            }
-//        }
+        Map<Object, Object> brandMap = redisUtil.hmget("brand");
+        if (brandMap!=null&&!brandMap.isEmpty()){
+            Set<Map.Entry<Object, Object>> entrySet = brandMap.entrySet();
+            for (Map.Entry<Object, Object> entry : entrySet) {
+                Brand brand = new Brand();
+                brand.setId(Long.parseLong(entry.getKey().toString()));
+                brand.setName(entry.getValue().toString());
+                brandList.add(brand);
+            }
+        }
         return  brandList;
     }
 
