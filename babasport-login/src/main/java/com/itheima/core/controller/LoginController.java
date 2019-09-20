@@ -40,7 +40,7 @@ public class LoginController {
     }
 
     ///提交登陆
-    @RequestMapping(value = "/login.aspx",method = RequestMethod.GET)
+    @RequestMapping(value = "/login.aspx",method = RequestMethod.POST)
     public String login(String username, String password, String ReturnUrl, Model model
             , HttpServletRequest request, HttpServletResponse response){
         //判断验证码不能为空

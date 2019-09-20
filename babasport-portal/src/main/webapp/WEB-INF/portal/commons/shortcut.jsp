@@ -3,6 +3,23 @@
 	function login(){
 	  location.href="http://localhost:9006/login.aspx?ReturnUrl="+encodeURIComponent(window.location.href);
 	}
+
+	$(function(){
+	  $.ajax({
+		url:"http://localhost:9006/isLogin.aspx",
+		type:"post",
+		dataType:"jsonp",
+		success:function (data) {
+		  if (data==0){
+			$("#logout").hide();
+			$("#myOrder").hide();
+		  }else{
+		    $("#login").hide();
+		    $("#regist").hide();
+		  }
+        }
+	  });
+	})
 </script>
 <div id="shortcut-2013">
 	<div class="w">
@@ -14,10 +31,10 @@
 		<ul class="fr lh">
 			<li class="fore1" id="loginbar" clstag="homepage|keycount|home2013|01b">
 				您好！欢迎来到新巴巴运动网！
-				<a href="javascript:;" onclick="login()">[登录]</a>&nbsp;
-				<a href="javascript:;" onclick="regist()">[免费注册]</a>
-				<a href="javascript:;" onclick="logout()">[退出]</a>
-				<a href="javascript:;" onclick="myOrder()" >我的订单</a>
+				<a href="javascript:;" onclick="login()" id="login">[登录]</a>&nbsp;
+				<a href="javascript:;" onclick="regist()" id="regist">[免费注册]</a>
+				<a href="javascript:;" onclick="logout()" id="logout">[退出]</a>
+				<a href="javascript:;" onclick="myOrder()" id="myOrder">我的订单</a>
 			</li>
 			<li class="fore2-1 ld" id="jd-vip">
 				<s></s>

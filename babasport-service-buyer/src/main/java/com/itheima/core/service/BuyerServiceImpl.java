@@ -18,7 +18,7 @@ import java.util.List;
  * @Description: com.itheima.core.service
  * @version: 1.0
  */
-@Service
+@Service("buyerService")
 @Transactional(readOnly = true,propagation = Propagation.REQUIRED)
 public class BuyerServiceImpl implements BuyerService {
 

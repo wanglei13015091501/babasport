@@ -28,8 +28,10 @@
     <!-- 		<dubbo:registry address="192.168.200.130:2181" protocol="zookeeper"/> -->
     <dubbo:registry address="N/A"/>
     <!-- 3:引用接口 -->
-    <dubbo:reference interface="com.itheima.core.service.solr.SolrService" id="solrService"
-                     url="dubbo://127.0.0.1:20881" />
+    <dubbo:reference interface="com.itheima.core.service.buyer.BuyerService" id="buyerService"
+                     url="dubbo://127.0.0.1:20883" />
+    <dubbo:reference interface="com.itheima.core.service.buyer.SessionProvider" id="sessionProvider"
+                     url="dubbo://127.0.0.1:20883" />
 
     <!-- 全局设置 -->
     <dubbo:consumer  timeout="600000" check="false"/>

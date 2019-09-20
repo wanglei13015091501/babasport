@@ -10,6 +10,7 @@ import com.itheima.common.redis.RedisUtil;
 import com.itheima.common.web.Constants;
 import com.itheima.core.service.buyer.SessionProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -19,6 +20,7 @@ import redis.clients.jedis.Jedis;
  *@日期:19/9/19 下午9:41
  *@版本:1.0
  **/
+@Service("sessionProvider")
 public class SessionProviderImpl implements SessionProvider {
 
     @Autowired

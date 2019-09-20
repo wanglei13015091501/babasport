@@ -30,7 +30,8 @@
 		<!-- 3：注册 IP PORT  默认是20880 -->
 		<dubbo:protocol host="127.0.0.1" port="20883"/>
 		<!-- 4:暴露接口 -->
-		<dubbo:service interface="com.itheima.core.service.TestTbService" ref="testTbService"/>
+		<dubbo:service interface="com.itheima.core.service.buyer.BuyerService" ref="buyerService"/>
+		<dubbo:service interface="com.itheima.core.service.buyer.SessionProvider" ref="sessionProvider"/>
 
 
 
