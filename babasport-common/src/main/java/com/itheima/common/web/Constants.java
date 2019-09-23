@@ -8,7 +8,7 @@ public class Constants {
 
 	
 	//图片服务器
-	public static final String IMG_URL = "http://192.168.232.129/";
+	public static final String IMG_URL = "http://10.126.33.46/";
 
 	public static final Long LOCK_PREFIX = 1L;
 

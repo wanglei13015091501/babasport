@@ -50,7 +50,4 @@
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
 
-
-    <import resource="dubbo-consumer.xml"/>
-
 </beans>

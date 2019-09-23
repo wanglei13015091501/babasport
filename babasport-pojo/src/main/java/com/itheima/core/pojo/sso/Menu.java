@@ -35,6 +35,7 @@ public class Menu implements Serializable {
         this.name = name;
     }
 
+
     public String getPage() {
         return page;
     }

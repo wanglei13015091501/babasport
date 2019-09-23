@@ -1,10 +1,11 @@
 package com.itheima.core.controller;
 
 import com.itheima.common.utils.RequestUtils;
-import com.itheima.core.pojo.user.Buyer;
 import com.itheima.core.service.buyer.BuyerService;
 import com.itheima.core.service.buyer.SessionProvider;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
@@ -43,37 +44,41 @@ public class LoginController {
     @RequestMapping(value = "/login.aspx",method = RequestMethod.POST)
     public String login(String username, String password, String ReturnUrl, Model model
             , HttpServletRequest request, HttpServletResponse response){
-        //判断验证码不能为空
-        //判断验证码必须正确
-        //判断验证码超时
-        //判断用户名不能为空
-        if(null != username){
-            //判断
-            if(null!= password){
-                //判断用户名必须正确
-                Buyer buyer = buyerService.selectBuyerByUsername(username);
-                if(null != buyer){
-                    //判断密码必须正确
-                    if(buyer.getPassword().equals(encodePassword(password))){
-                        //保存用户对象到Session（远程Session)
-                        sessionProvider.setAttributeForUsername(
-                                RequestUtils.getCSESSIONID(request, response), buyer.getUsername());
-                        //返回之前访问的页面
-                        return "redirect:" + ReturnUrl;
-
-                    }else{
-                        model.addAttribute("error", "密码必须正确 ");
-                    }
-                }else{
-                    model.addAttribute("error", "用户名必须正确 ");
-                }
-            }else{
-                model.addAttribute("error", "密码不能为空");
-            }
-        }else{
-            model.addAttribute("error", "用户名不能为空");
-        }
-
+//        //判断验证码不能为空
+//        //判断验证码必须正确
+//        //判断验证码超时
+//        //判断用户名不能为空
+//        if(null != username){
+//            //判断
+//            if(null!= password){
+//                //判断用户名必须正确
+//                Buyer buyer = buyerService.selectBuyerByUsername(username);
+//                if(null != buyer){
+//                    //判断密码必须正确
+//                    if(buyer.getPassword().equals(encodePassword(password))){
+//                        //保存用户对象到Session（远程Session)
+//                        sessionProvider.setAttributeForUsername(
+//                                RequestUtils.getCSESSIONID(request, response), buyer.getUsername());
+//                        //返回之前访问的页面
+//                        return "redirect:" + ReturnUrl;
+//
+//                    }else{
+//                        model.addAttribute("error", "密码必须正确 ");
+//                    }
+//                }else{
+//                    model.addAttribute("error", "用户名必须正确 ");
+//                }
+//            }else{
+//                model.addAttribute("error", "密码不能为空");
+//            }
+//        }else{
+//            model.addAttribute("error", "用户名不能为空");
+//        }
+//
+//        return "login";
+        //获得shiro的Subject对象,代表当前用户
+        Subject subject = SecurityUtils.getSubject();
+       // AuthenticationToken token = new UsernamePasswordToken();
         return "login";
     }
 

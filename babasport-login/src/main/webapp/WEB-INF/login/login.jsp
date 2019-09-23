@@ -14,7 +14,6 @@
 $(function(){
 	$("#loginsubmit").click(function(){
 		$("#loginForm").submit();
-		
 	});
 });
 </script>
