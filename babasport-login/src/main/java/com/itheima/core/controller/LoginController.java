@@ -1,10 +1,15 @@
 package com.itheima.core.controller;
 
 import com.itheima.common.utils.RequestUtils;
+import com.itheima.core.pojo.sso.User;
 import com.itheima.core.service.buyer.BuyerService;
 import com.itheima.core.service.buyer.SessionProvider;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -76,10 +81,28 @@ public class LoginController {
 //        }
 //
 //        return "login";
-        //获得shiro的Subject对象,代表当前用户
-        Subject subject = SecurityUtils.getSubject();
-       // AuthenticationToken token = new UsernamePasswordToken();
-        return "login";
+        try {
+            //获得shiro的Subject对象,代表当前用户
+            Subject subject = SecurityUtils.getSubject();
+            AuthenticationToken token = new UsernamePasswordToken(username,password);
+            subject.login(token);
+            User user = (User) subject.getPrincipal();
+
+            // 保存用户对象到远程Session（即redis),下次访问的时候就不用再次登录
+            //方式一:request.getSession().setAttribute("loginUser",user);
+            sessionProvider.setAttributeForUsername(RequestUtils.getCSESSIONID(request, response), user.getUsername());
+            //返回之前访问的页面
+            return "redirect:" + ReturnUrl;
+        } catch (UnknownAccountException e) {
+            e.printStackTrace();
+            //认证失败,因为输入的username不存在
+            return "login";
+        }catch (IncorrectCredentialsException e){
+            e.printStackTrace();
+            //认证失败,因为密码输入错误
+            return "login";
+        }
+
     }
 
     //加密

@@ -22,6 +22,7 @@ public class User implements Serializable {
     private String username; // 登陆用户名
     private String nickname;
 
+
     public Long getId() {
         return id;
     }
