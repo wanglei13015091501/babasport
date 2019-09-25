@@ -2,7 +2,6 @@ package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Auther: wanglei
@@ -14,8 +13,8 @@ public class RolePermission implements Serializable {
 
     private static final long serialVersionUID = 6517943370948820978L;
     private Long id;
-    private List<Role> roleList;
-    private List<Permission> permissionList;
+    private Long roleId;
+    private Long permissionId;
     private Date created;
 
     public Long getId() {
@@ -26,20 +25,20 @@ public class RolePermission implements Serializable {
         this.id = id;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public List<Permission> getPermissionList() {
-        return permissionList;
+    public Long getPermissionId() {
+        return permissionId;
     }
 
-    public void setPermissionList(List<Permission> permissionList) {
-        this.permissionList = permissionList;
+    public void setPermissionId(Long permissionId) {
+        this.permissionId = permissionId;
     }
 
     public Date getCreated() {
@@ -54,8 +53,8 @@ public class RolePermission implements Serializable {
     public String toString() {
         return "RolePermission{" +
                 "id=" + id +
-                ", roleList=" + roleList +
-                ", permissionList=" + permissionList +
+                ", roleId=" + roleId +
+                ", permissionId=" + permissionId +
                 ", created=" + created +
                 '}';
     }

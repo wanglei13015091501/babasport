@@ -2,10 +2,10 @@ package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Auther: wanglei
+ *
  * @Date: 2019.09.24
  * @Description: com.itheima.core.pojo.sso
  * @version: 1.0
@@ -13,8 +13,8 @@ import java.util.List;
 public class UserRole implements Serializable {
     private static final long serialVersionUID = -1532998430689384086L;
     private Long id;
-    private List<Role> roleList;
-    private List<User> userList;
+    private Long roleId;
+    private Long userId;
     private Date created;
 
     public Long getId() {
@@ -25,20 +25,20 @@ public class UserRole implements Serializable {
         this.id = id;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Date getCreated() {
@@ -53,8 +53,8 @@ public class UserRole implements Serializable {
     public String toString() {
         return "UserRole{" +
                 "id=" + id +
-                ", roleList=" + roleList +
-                ", userList=" + userList +
+                ", roleId=" + roleId +
+                ", userId=" + userId +
                 ", created=" + created +
                 '}';
     }

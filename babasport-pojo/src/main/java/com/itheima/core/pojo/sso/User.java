@@ -2,6 +2,7 @@ package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Auther: wanglei
@@ -21,7 +22,7 @@ public class User implements Serializable {
     private String telephone; // 联系电话
     private String username; // 登陆用户名
     private String nickname;
-
+    private List<Role> roleList;
 
     public Long getId() {
         return id;
@@ -95,6 +96,14 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -107,6 +116,7 @@ public class User implements Serializable {
                 ", telephone='" + telephone + '\'' +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", roleList=" + roleList +
                 '}';
     }
 }

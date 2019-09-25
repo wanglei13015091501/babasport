@@ -1,6 +1,7 @@
 package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Auther: wanglei
@@ -16,7 +17,9 @@ public class Menu implements Serializable {
     private String page; // 访问路径
     private Integer priority; // 优先级
     private String description; // 描述
-    private Long pid;//父菜单
+    private Menu parentMenu;//父菜单,多对一
+    private List<Menu> childrenMenus;//子菜单,一对多
+    private List<Role> roleList;//角色,多对多
 
 
     public Long getId() {
@@ -34,7 +37,6 @@ public class Menu implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getPage() {
         return page;
@@ -60,12 +62,28 @@ public class Menu implements Serializable {
         this.description = description;
     }
 
-    public Long getPid() {
-        return pid;
+    public Menu getParentMenu() {
+        return parentMenu;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public void setParentMenu(Menu parentMenu) {
+        this.parentMenu = parentMenu;
+    }
+
+    public List<Menu> getChildrenMenus() {
+        return childrenMenus;
+    }
+
+    public void setChildrenMenus(List<Menu> childrenMenus) {
+        this.childrenMenus = childrenMenus;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     @Override
@@ -76,7 +94,9 @@ public class Menu implements Serializable {
                 ", page='" + page + '\'' +
                 ", priority=" + priority +
                 ", description='" + description + '\'' +
-                ", pid=" + pid +
+                ", parentMenu=" + parentMenu +
+                ", childrenMenus=" + childrenMenus +
+                ", roleList=" + roleList +
                 '}';
     }
 }

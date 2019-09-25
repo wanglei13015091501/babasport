@@ -1,6 +1,7 @@
 package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Auther: wanglei
@@ -15,6 +16,10 @@ public class Role implements Serializable {
     private String keyword; // 角色关键字，用于权限控制
     private String description; // 描述
     private String status; // 状态
+
+    private List<User> userList;//角色对应的用户,多对多
+    private List<Permission> permissionList;//角色对应的权限,多对多
+    private List<Menu> menuList;//菜单对应的权限,多对多
 
     public Long getId() {
         return id;
@@ -56,6 +61,30 @@ public class Role implements Serializable {
         this.status = status;
     }
 
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
+
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -64,6 +93,9 @@ public class Role implements Serializable {
                 ", keyword='" + keyword + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
+                ", userList=" + userList +
+                ", permissionList=" + permissionList +
+                ", menuList=" + menuList +
                 '}';
     }
 }
