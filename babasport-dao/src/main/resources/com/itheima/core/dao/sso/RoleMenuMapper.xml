@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.core.dao.RoleMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.RoleMenu" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="menu_id" property="menu_id" jdbcType="BIGINT" />
+    <result column="role_id" property="role_id" jdbcType="BIGINT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="resultMenuMap" type="com.itheima.core.pojo.menu">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="page" property="page" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="BIT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="resultRoleMap" type="com.itheima.core.pojo.sso.Role">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="page" property="page" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="BIT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, menu_id, role_id, created
+  </sql>
+  <!--根据roleid获取菜单-->
+  <select id="getMenusByRoleId" resultMap="resultUserMap" parameterType="java.lang.Long">
+    select rm.* from role_menu rm,menu m where rm.menu_id=m.id and rm.role_id=#{role_id}
+  </select>
+  <select id="getRolesByMenuId" resultMap="resultMenuMap" parameterType="java.lang.Long">
+    select rm.* from role_menu rm,menu m where rm.menu_id=m.id and rm.role_id=#{role_id}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from role_menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role_menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.itheima.core.pojo.RoleMenu" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      MqSql
+    </selectKey>
+    insert into role_menu (menu_id, role_id, created
+      )
+    values (#{menu_id,jdbcType=BIGINT}, #{role_id,jdbcType=BIGINT}, #{created,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.RoleMenu" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      MqSql
+    </selectKey>
+    insert into role_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menu_id != null" >
+        menu_id,
+      </if>
+      <if test="role_id != null" >
+        role_id,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menu_id != null" >
+        #{menu_id,jdbcType=BIGINT},
+      </if>
+      <if test="role_id != null" >
+        #{role_id,jdbcType=BIGINT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.RoleMenu" >
+    update role_menu
+    <set >
+      <if test="menu_id != null" >
+        menu_id = #{menu_id,jdbcType=BIGINT},
+      </if>
+      <if test="role_id != null" >
+        role_id = #{role_id,jdbcType=BIGINT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.RoleMenu" >
+    update role_menu
+    set menu_id = #{menu_id,jdbcType=BIGINT},
+      role_id = #{role_id,jdbcType=BIGINT},
+      created = #{created,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

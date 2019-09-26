@@ -16,6 +16,7 @@
   	<module>babasport-service-solr</module>
   	<module>babasport-service-buyer</module>
   	<module>babasport-service-cms</module>
+      <module>generatorText</module>
   </modules>
   
   

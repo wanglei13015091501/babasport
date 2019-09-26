@@ -11,6 +11,8 @@
         另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用-->
     <properties resource="generator.properties"></properties>
 
+
+
     <!--指定特定数据库的jdbc驱动jar包的位置-->
     <classPathEntry location="${jdbc.driverLocation}"/>
     <!--context:生成一组对象的环境
@@ -25,8 +27,20 @@
         introspectedColumnImpl：类全限定名，用于扩展MBG-->
     <context id="default" targetRuntime="MyBatis3">
 
+        <!--生成一对一配置-->
+        <!--<plugin type="cc.bandaotixi.plugins.OneToOnePlugin"></plugin>-->
+
+        <!--&lt;!&ndash;生成一对多配置&ndash;&gt;-->
+        <!--<plugin type="cc.bandaotixi.plugins.OneToManyPlugin"></plugin>-->
+
+        <!--<plugin type="cc.bandaotixi.plugins.BatchInsertPlugin"></plugin>-->
+        <!--<plugin type="cc.bandaotixi.plugins.BatchUpdatePlugin"></plugin>-->
+
+        <!-- 生成的pojo，将implements Serializable -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <!-- optional，旨在创建class时，对注释进行控制 -->
-        <commentGenerator>
+        <commentGenerator type="">
+            <property name="javaFileEncoding" value="UTF-8"/>
             <property name="suppressDate" value="true"/>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
@@ -40,15 +54,15 @@
         </jdbcConnection>
 
 
-        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer true，把JDBC DECIMAL 和
+    			NUMERIC 类型解析为java.math.BigDecimal -->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
 
-        <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
-            targetPackage     指定生成的model生成所在的包名
-            targetProject     指定在该项目下所在的路径
+        <!-- 生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
+    			也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下
         -->
         <javaModelGenerator targetPackage="com.itheima.core.pojo"
                             targetProject="src/main/java">
@@ -120,11 +134,51 @@
 
              注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
-        <table tableName="user" schema=""></table>
-        <table tableName="user" schema=""></table>
-        <table tableName="user" schema=""></table>
-        <table tableName="user" schema=""></table>
+        <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
+        <table tableName="user" domainObjectName="User" schema="">
+            <!--根据数据库字段名称转成驼峰写法 -->
+            <!--写法问题： oracle 数据库，字段不区分大小写，数据库中全是大写，驼峰写法：设置false 字段名称在驼峰中使用下划线"_" 例如：file_name
+                转为fileName -->
+            <!--写法问题： mysql 数据库，字段区分大小写，驼峰写法：设置true时 字段名称正常写法 例如：fileName 转为fileName;
+                设置false 则是filename -->
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+            <!-- 有对应实体的时候，把字段忽略生成 -->
+            <!--<ignoreColumn column="dept" />-->
 
+        </table>
+        <table tableName="role" domainObjectName="role" schema="">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+        </table>
+        <table tableName="menu" domainObjectName="menu" schema="">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+            <!--<oneToOne mappingTable="menu" column="id" joinColumn="pId" />-->
+            <!--<oneToMany mappingTable="menu" column="id" joinColumn="id" />-->
+        </table>
+        <table tableName="permission" domainObjectName="permission" schema="">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+        </table>
+        <table tableName="role_menu" domainObjectName="RoleMenu" schema="" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+        </table>
+        <table tableName="role_permission" domainObjectName="RolePermission" schema="" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+        </table>
+        <table tableName="user_role" domainObjectName="UserRole" schema="" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
+        </table>
 
     </context>
 </generatorConfiguration>

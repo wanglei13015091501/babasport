@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.core.dao.RolePermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.RolePermission" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="role_id" property="role_id" jdbcType="BIGINT" />
+    <result column="permission_id" property="permission_id" jdbcType="BIGINT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, role_id, permission_id, created
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from role_permission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role_permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.itheima.core.pojo.RolePermission" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      MqSql
+    </selectKey>
+    insert into role_permission (role_id, permission_id, created
+      )
+    values (#{role_id,jdbcType=BIGINT}, #{permission_id,jdbcType=BIGINT}, #{created,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.RolePermission" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      MqSql
+    </selectKey>
+    insert into role_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="role_id != null" >
+        role_id,
+      </if>
+      <if test="permission_id != null" >
+        permission_id,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="role_id != null" >
+        #{role_id,jdbcType=BIGINT},
+      </if>
+      <if test="permission_id != null" >
+        #{permission_id,jdbcType=BIGINT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.RolePermission" >
+    update role_permission
+    <set >
+      <if test="role_id != null" >
+        role_id = #{role_id,jdbcType=BIGINT},
+      </if>
+      <if test="permission_id != null" >
+        permission_id = #{permission_id,jdbcType=BIGINT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.RolePermission" >
+    update role_permission
+    set role_id = #{role_id,jdbcType=BIGINT},
+      permission_id = #{permission_id,jdbcType=BIGINT},
+      created = #{created,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

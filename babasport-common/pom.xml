@@ -226,6 +226,13 @@
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-all</artifactId>
 		</dependency>
+
+		<!--mybatis的一对多,一对一插件-->
+		<dependency>
+			<groupId>com.kedianshuju</groupId>
+			<artifactId>mybatisgenerator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+		</dependency>
 		</dependencies>
   
 </project>

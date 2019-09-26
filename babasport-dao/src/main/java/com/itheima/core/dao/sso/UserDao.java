@@ -1,31 +1,31 @@
 package com.itheima.core.dao.sso;
 
-import com.itheima.core.pojo.product.Product;
-import com.itheima.core.pojo.product.ProductQuery;
+import com.itheima.core.pojo.sso.User;
+import com.itheima.core.pojo.sso.UserQuery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * @Auther: wanglei
- * @Date: 2019.09.24
- * @Description: com.itheima.core.dao.sso
- * @version: 1.0
- */
 public interface UserDao {
+    int countByExample(UserQuery example);
+
+    int deleteByExample(UserQuery example);
 
     int deleteByPrimaryKey(Long id);
 
-    int insert(Product record);
+    int insert(User record);
 
-    int insertSelective(Product record);
+    int insertSelective(User record);
 
-    Product selectByPrimaryKey(Long id);
+    List<User> selectByExample(UserQuery example);
 
-    int updateByPrimaryKeySelective(Product record);
+    User selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKey(Product record);
+    int updateByExampleSelective(@Param("record") User record, @Param("example") UserQuery example);
 
-    int countByExample(ProductQuery productQuery);
+    int updateByExample(@Param("record") User record, @Param("example") UserQuery example);
 
-    List selectByExample(ProductQuery productQuery);
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
 }
