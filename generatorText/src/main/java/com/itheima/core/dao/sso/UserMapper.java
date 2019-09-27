@@ -1,7 +1,7 @@
-package com.itheima.core.dao;
+package com.itheima.core.dao.sso;
 
-import com.itheima.core.pojo.User;
-import com.itheima.core.pojo.UserExample;
+import com.itheima.core.pojo.sso.User;
+import com.itheima.core.pojo.sso.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

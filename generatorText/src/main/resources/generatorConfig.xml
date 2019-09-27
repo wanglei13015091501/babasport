@@ -64,7 +64,7 @@
         <!-- 生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
     			也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下
         -->
-        <javaModelGenerator targetPackage="com.itheima.core.pojo"
+        <javaModelGenerator targetPackage="com.itheima.core.pojo.sso"
                             targetProject="src/main/java">
 
             <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
@@ -78,7 +78,7 @@
         </javaModelGenerator>
 
         <!--Mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件 -->
-        <sqlMapGenerator targetPackage="com.itheima.core.dao"
+        <sqlMapGenerator targetPackage="com.itheima.core.dao.sso"
                          targetProject="src/main/java">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="false"/>
@@ -90,7 +90,7 @@
                 type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
                 注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
         -->
-        <javaClientGenerator targetPackage="com.itheima.core.dao"
+        <javaClientGenerator targetPackage="com.itheima.core.dao.sso"
                              targetProject="src/main/java" type="XMLMAPPER">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
@@ -147,17 +147,17 @@
             <!--<ignoreColumn column="dept" />-->
 
         </table>
-        <table tableName="role" domainObjectName="role" schema="">
+        <table tableName="role" domainObjectName="Role" schema="">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
         </table>
-        <table tableName="menu" domainObjectName="menu" schema="">
+        <table tableName="menu" domainObjectName="Menu" schema="">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
             <!--<oneToOne mappingTable="menu" column="id" joinColumn="pId" />-->
             <!--<oneToMany mappingTable="menu" column="id" joinColumn="id" />-->
         </table>
-        <table tableName="permission" domainObjectName="permission" schema="">
+        <table tableName="permission" domainObjectName="Permission" schema="">
             <property name="useActualColumnNames" value="true"/>
             <generatedKey column="id" sqlStatement="MqSql" identity="true"/>
         </table>

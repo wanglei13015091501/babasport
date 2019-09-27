@@ -1,4 +1,4 @@
-package com.itheima.core.pojo;
+package com.itheima.core.pojo.sso;
 
 import java.util.ArrayList;
 import java.util.Date;

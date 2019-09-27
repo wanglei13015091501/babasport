@@ -1,6 +1,6 @@
-package com.itheima.core.dao;
+package com.itheima.core.dao.sso;
 
-import com.itheima.core.pojo.UserRole;
+import com.itheima.core.pojo.sso.UserRole;
 
 public interface UserRoleMapper {
     int deleteByPrimaryKey(Long id);

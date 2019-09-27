@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itheima.core.dao.roleMapper" >
-  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.role" >
+<mapper namespace="com.itheima.core.dao.sso.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.sso.Menu" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="page" property="page" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="BIT" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, keyword, status, description
+    id, name, page, priority, description, pid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.roleExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.sso.MenuExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from role
+    from menu
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,70 +87,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from role
+    from menu
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from role
+    delete from menu
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.roleExample" >
-    delete from role
+  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.sso.MenuExample" >
+    delete from menu
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.itheima.core.pojo.role" >
+  <insert id="insert" parameterType="com.itheima.core.pojo.sso.Menu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
-    insert into role (name, keyword, status, 
-      description)
-    values (#{name,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR})
+    insert into menu (name, page, priority, 
+      description, pid)
+    values (#{name,jdbcType=VARCHAR}, #{page,jdbcType=VARCHAR}, #{priority,jdbcType=BIT}, 
+      #{description,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.itheima.core.pojo.role" >
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.sso.Menu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
-    insert into role
+    insert into menu
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
       </if>
-      <if test="keyword != null" >
-        keyword,
+      <if test="page != null" >
+        page,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="priority != null" >
+        priority,
       </if>
       <if test="description != null" >
         description,
+      </if>
+      <if test="pid != null" >
+        pid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="keyword != null" >
-        #{keyword,jdbcType=VARCHAR},
+      <if test="page != null" >
+        #{page,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+      <if test="priority != null" >
+        #{priority,jdbcType=BIT},
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
       </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.itheima.core.pojo.roleExample" resultType="java.lang.Integer" >
-    select count(*) from role
+  <select id="countByExample" parameterType="com.itheima.core.pojo.sso.MenuExample" resultType="java.lang.Integer" >
+    select count(*) from menu
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update role
+    update menu
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -157,14 +164,17 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.keyword != null" >
-        keyword = #{record.keyword,jdbcType=VARCHAR},
+      <if test="record.page != null" >
+        page = #{record.page,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.priority != null" >
+        priority = #{record.priority,jdbcType=BIT},
       </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -172,40 +182,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update role
+    update menu
     set id = #{record.id,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      keyword = #{record.keyword,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=VARCHAR}
+      page = #{record.page,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=BIT},
+      description = #{record.description,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.role" >
-    update role
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.sso.Menu" >
+    update menu
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="keyword != null" >
-        keyword = #{keyword,jdbcType=VARCHAR},
+      <if test="page != null" >
+        page = #{page,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=BIT},
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.role" >
-    update role
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.sso.Menu" >
+    update menu
     set name = #{name,jdbcType=VARCHAR},
-      keyword = #{keyword,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR}
+      page = #{page,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=BIT},
+      description = #{description,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -17,10 +17,10 @@ public class Menu implements Serializable {
     private String page; // 访问路径
     private Integer priority; // 优先级
     private String description; // 描述
+    private Long pid;
     private Menu parentMenu;//父菜单,多对一
     private List<Menu> childrenMenus;//子菜单,一对多
     private List<Role> roleList;//角色,多对多
-
 
     public Long getId() {
         return id;
@@ -62,6 +62,14 @@ public class Menu implements Serializable {
         this.description = description;
     }
 
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
     public Menu getParentMenu() {
         return parentMenu;
     }
@@ -94,6 +102,7 @@ public class Menu implements Serializable {
                 ", page='" + page + '\'' +
                 ", priority=" + priority +
                 ", description='" + description + '\'' +
+                ", pid=" + pid +
                 ", parentMenu=" + parentMenu +
                 ", childrenMenus=" + childrenMenus +
                 ", roleList=" + roleList +

@@ -1,14 +1,14 @@
-package com.itheima.core.pojo;
+package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserRole implements Serializable {
+public class RolePermission implements Serializable {
     private Long id;
 
-    private Long user_id;
-
     private Long role_id;
+
+    private Long permission_id;
 
     private Date created;
 
@@ -22,20 +22,20 @@ public class UserRole implements Serializable {
         this.id = id;
     }
 
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
-
     public Long getRole_id() {
         return role_id;
     }
 
     public void setRole_id(Long role_id) {
         this.role_id = role_id;
+    }
+
+    public Long getPermission_id() {
+        return permission_id;
+    }
+
+    public void setPermission_id(Long permission_id) {
+        this.permission_id = permission_id;
     }
 
     public Date getCreated() {

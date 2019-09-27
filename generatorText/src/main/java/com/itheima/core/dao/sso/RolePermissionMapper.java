@@ -1,6 +1,6 @@
-package com.itheima.core.dao;
+package com.itheima.core.dao.sso;
 
-import com.itheima.core.pojo.RolePermission;
+import com.itheima.core.pojo.sso.RolePermission;
 
 public interface RolePermissionMapper {
     int deleteByPrimaryKey(Long id);

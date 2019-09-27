@@ -1,8 +1,8 @@
-package com.itheima.core.pojo;
+package com.itheima.core.pojo.sso;
 
 import java.io.Serializable;
 
-public class role implements Serializable {
+public class Role implements Serializable {
     private Long id;
 
     private String name;

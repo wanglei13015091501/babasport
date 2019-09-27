@@ -1,6 +1,6 @@
-package com.itheima.core.dao;
+package com.itheima.core.dao.sso;
 
-import com.itheima.core.pojo.RoleMenu;
+import com.itheima.core.pojo.sso.RoleMenu;
 
 public interface RoleMenuMapper {
     int deleteByPrimaryKey(Long id);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itheima.core.dao.roleMapper" >
-  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.role" >
+<mapper namespace="com.itheima.core.dao.sso.RoleDao" >
+  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.sso.Role" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="keyword" property="keyword" jdbcType="VARCHAR" />
@@ -69,7 +69,7 @@
   <sql id="Base_Column_List" >
     id, name, keyword, status, description
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.roleExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.sso.RoleQuery" >
     select
     <if test="distinct" >
       distinct
@@ -93,13 +93,13 @@
     delete from role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.roleExample" >
+  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.sso.RoleQuery" >
     delete from role
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.itheima.core.pojo.role" >
+  <insert id="insert" parameterType="com.itheima.core.pojo.sso.Role" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
@@ -108,7 +108,7 @@
     values (#{name,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.itheima.core.pojo.role" >
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.sso.Role" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
@@ -142,7 +142,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.itheima.core.pojo.roleExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.itheima.core.pojo.sso.RoleQuery" resultType="java.lang.Integer" >
     select count(*) from role
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -182,7 +182,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.role" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.sso.Role" >
     update role
     <set >
       <if test="name != null" >
@@ -200,7 +200,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.role" >
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.sso.Role" >
     update role
     set name = #{name,jdbcType=VARCHAR},
       keyword = #{keyword,jdbcType=VARCHAR},

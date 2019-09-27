@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itheima.core.dao.menuMapper" >
-  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.menu" >
+<mapper namespace="com.itheima.core.dao.sso.MenuDao" >
+  <resultMap id="BaseResultMap" type="com.itheima.core.pojo.sso.Menu" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="page" property="page" jdbcType="VARCHAR" />
     <result column="priority" property="priority" jdbcType="BIT" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="BIGINT" />
-    <!--一对一:一个菜单对应一个父菜单-->
-    <association property="parentMenu"  javaType="com.itheima.core.pojo.menu">
-      <id column="id" property="id" jdbcType="BIGINT" />
-      <result column="name" property="name" jdbcType="VARCHAR" />
-      <result column="page" property="page" jdbcType="VARCHAR" />
-      <result column="priority" property="priority" jdbcType="BIT" />
-      <result column="description" property="description" jdbcType="VARCHAR" />
-      <result column="pid" property="pid" jdbcType="BIGINT" />
+    <!--一对一:当前菜单对应唯一父菜单-->
+    <association property="parentMenu" javaType="com.itheima.core.pojo.sso.Menu">
+      <id column="id2" property="id"  jdbcType="BIGINT"/>
+      <result column="name2" property="name" jdbcType="VARCHAR" />
+      <result column="page2" property="page" jdbcType="VARCHAR" />
+      <result column="priority2" property="priority" jdbcType="BIT" />
+      <result column="description2" property="description" jdbcType="VARCHAR" />
+      <result column="pid2" property="pid" jdbcType="BIGINT" />
     </association>
-    <!--一对多:一个菜单对应多个子菜单
-        property:javaBean中的属性;
-        ofType:list中的pojo的类型;
-        column:作为select语句的参数传入,如果只传一个参数id可以简写: column="id"
+    <!--一对多:当前菜单对应多个子菜单,ofType:相当于泛型;
     -->
-    <collection property="childrenMenus" ofType="com.itheima.core.pojo.menu" column="pid">
-      <id column="id" property="id" jdbcType="BIGINT" />
-      <result column="name" property="name" jdbcType="VARCHAR" />
-      <result column="page" property="page" jdbcType="VARCHAR" />
-      <result column="priority" property="priority" jdbcType="BIT" />
-      <result column="description" property="description" jdbcType="VARCHAR" />
-      <result column="pid" property="pid" jdbcType="BIGINT" />
+    <collection property="childrenMenus" ofType="com.itheima.core.pojo.sso.Menu" javaType="list">
+      <id column="id3" property="id"  jdbcType="BIGINT"/>
+      <result column="name3" property="name" jdbcType="VARCHAR" />
+      <result column="page3" property="page" jdbcType="VARCHAR" />
+      <result column="priority3" property="priority" jdbcType="BIT" />
+      <result column="description3" property="description" jdbcType="VARCHAR" />
+      <result column="pid3" property="pid" jdbcType="BIGINT" />
+    </collection>
+    <!--多对多:当前菜单对应多个角色-->
+    <collection property="roleList" ofType="com.itheima.core.pojo.sso.Role" javaType="list">
+
     </collection>
 
-    <collection property="roleList" ofType="com.itheima.core.pojo.sso.Role" column="id">
-      <id column="id" property="id" jdbcType="BIGINT" />
-      <result column="name" property="name" jdbcType="VARCHAR" />
-      <result column="keyword" property="keyword" jdbcType="VARCHAR" />
-      <result column="status" property="status" jdbcType="VARCHAR" />
-      <result column="description" property="description" jdbcType="VARCHAR" />
-    </collection>
+
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,7 +95,7 @@
   <sql id="Base_Column_List" >
     id, name, page, priority, description, pid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.menuExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.core.pojo.sso.MenuQuery" >
     select
     <if test="distinct" >
       distinct
@@ -116,21 +111,23 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    <include refid="Base_Column_List" />
-    from menu
-    where id = #{id,jdbcType=BIGINT}
+    m1.id, m1.name, m1.page, m1.priority, m1.description, m1.pid,
+    m2.id id2, m2.name name2, m2.page page2, m2.priority priority2, m2.description description2, m2.pid pid2,
+    m3.id id3, m3.name name3, m3.page page3, m3.priority priority3, m3.description description3, m3.pid pid3
+    from menu m1 left join menu m2 on m1.pid = m2.id left join menu m3 on m1.id = m3.pid left join role r1 on r1.
+    where m1.id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from menu
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.menuExample" >
+  <delete id="deleteByExample" parameterType="com.itheima.core.pojo.sso.MenuQuery" >
     delete from menu
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.itheima.core.pojo.menu" >
+  <insert id="insert" parameterType="com.itheima.core.pojo.sso.Menu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
@@ -139,7 +136,7 @@
     values (#{name,jdbcType=VARCHAR}, #{page,jdbcType=VARCHAR}, #{priority,jdbcType=BIT}, 
       #{description,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.itheima.core.pojo.menu" >
+  <insert id="insertSelective" parameterType="com.itheima.core.pojo.sso.Menu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       MqSql
     </selectKey>
@@ -179,7 +176,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.itheima.core.pojo.menuExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.itheima.core.pojo.sso.MenuQuery" resultType="java.lang.Integer" >
     select count(*) from menu
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -223,7 +220,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.menu" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.core.pojo.sso.Menu" >
     update menu
     <set >
       <if test="name != null" >
@@ -244,7 +241,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.menu" >
+  <update id="updateByPrimaryKey" parameterType="com.itheima.core.pojo.sso.Menu" >
     update menu
     set name = #{name,jdbcType=VARCHAR},
       page = #{page,jdbcType=VARCHAR},
