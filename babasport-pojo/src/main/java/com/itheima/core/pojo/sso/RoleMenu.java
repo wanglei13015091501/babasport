@@ -17,6 +17,9 @@ public class RoleMenu implements Serializable {
     private Long roleId;
     private Date created;
 
+    private Menu menu;
+    private Role role;
+
     public Long getId() {
         return id;
     }
@@ -49,6 +52,22 @@ public class RoleMenu implements Serializable {
         this.created = created;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "RoleMenu{" +
@@ -56,6 +75,8 @@ public class RoleMenu implements Serializable {
                 ", menuId=" + menuId +
                 ", roleId=" + roleId +
                 ", created=" + created +
+                ", menu=" + menu +
+                ", role=" + role +
                 '}';
     }
 }

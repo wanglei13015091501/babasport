@@ -22,4 +22,5 @@ public interface RoleMenuDao {
     List<Role> getRolesByMenuId(Long menuId);
 
     List<Menu> getMenusByRoleId(Long roleId);
+
 }

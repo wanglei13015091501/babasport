@@ -28,11 +28,7 @@
       <result column="pid3" property="pid" jdbcType="BIGINT" />
     </collection>
     <!--多对多:当前菜单对应多个角色-->
-    <collection property="roleList" ofType="com.itheima.core.pojo.sso.Role" javaType="list">
-
-    </collection>
-
-
+    <collection property="roleList" column="id" select="com.itheima.core.dao.sso.RoleMenuDao.getRolesByMenuId"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -113,8 +109,10 @@
     select 
     m1.id, m1.name, m1.page, m1.priority, m1.description, m1.pid,
     m2.id id2, m2.name name2, m2.page page2, m2.priority priority2, m2.description description2, m2.pid pid2,
-    m3.id id3, m3.name name3, m3.page page3, m3.priority priority3, m3.description description3, m3.pid pid3
-    from menu m1 left join menu m2 on m1.pid = m2.id left join menu m3 on m1.id = m3.pid left join role r1 on r1.
+    m3.id id3, m3.name name3, m3.page page3, m3.priority priority3, m3.description description3, m3.pid pid3,
+    r.`id` id4,r.`keyword`,r.`name` name4,r.`status`,r.`description` description4
+    from menu m1 left join menu m2 on m1.pid = m2.id left join menu m3 on m1.id = m3.pid
+    left join role_menu rm on rm.menu_id=m1.id left join role r on r.`id`=rm.`role_id`
     where m1.id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

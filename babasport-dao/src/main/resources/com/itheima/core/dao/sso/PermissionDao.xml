@@ -7,6 +7,8 @@
     <result column="keyword" property="keyword" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <!--多对多-->
+    <collection property="roleList" column="id" select="com.itheima.core.dao.sso.RolePermissionDao.getRolesByPermissionId"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >

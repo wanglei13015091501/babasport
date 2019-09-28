@@ -7,6 +7,10 @@
     <result column="keyword" property="keyword" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+
+    <collection property="menuList" column="id" select="com.itheima.core.dao.sso.RoleMenuDao.getMenusByRoleId"/>
+    <collection property="permissionList" column="id" select="com.itheima.core.dao.sso.RolePermissionDao.getPermissionsByRoleId"/>
+    <collection property="userList" column="id" select="com.itheima.core.dao.sso.UserRoleDao.getUsersByRoleId"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >

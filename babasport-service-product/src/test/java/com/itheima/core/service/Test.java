@@ -2,9 +2,9 @@ package com.itheima.core.service;
 
 import com.itheima.common.redis.RedisUtil;
 import com.itheima.core.dao.product.ProductDao;
-import com.itheima.core.dao.sso.MenuDao;
+import com.itheima.core.dao.sso.RoleDao;
 import com.itheima.core.pojo.product.Product;
-import com.itheima.core.pojo.sso.Menu;
+import com.itheima.core.pojo.sso.Role;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
@@ -38,7 +38,7 @@ public class Test extends AbstractJUnit4SpringContextTests {
     private RedisUtil redisUtil;
 
     @Autowired
-    private MenuDao menuDao;
+    private RoleDao roleDao;
 
 
     @org.junit.Test
@@ -66,7 +66,7 @@ public class Test extends AbstractJUnit4SpringContextTests {
 
     @org.junit.Test
     public void testMybatis(){
-        Menu menu = menuDao.selectByPrimaryKey(1L);
-        System.out.println(menu);
+        Role role = roleDao.selectByPrimaryKey(1L);
+        System.out.println(role);
     }
 }

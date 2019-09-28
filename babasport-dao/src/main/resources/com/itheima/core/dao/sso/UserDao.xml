@@ -11,6 +11,8 @@
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <!--多对多-->
+    <collection property="roleList" column="id" select="com.itheima.core.dao.sso.UserRoleDao.getRolesByUserId"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >

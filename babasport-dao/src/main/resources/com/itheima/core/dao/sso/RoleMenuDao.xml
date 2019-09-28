@@ -7,10 +7,33 @@
     <result column="role_id" property="role_id" jdbcType="BIGINT" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="resultRoleMap" type="com.itheima.core.pojo.sso.Role" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="resultMenuMap" type="com.itheima.core.pojo.sso.Menu">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="page" property="page" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="BIT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+  </resultMap>
+  
 
   <sql id="Base_Column_List" >
     id, menu_id, role_id, created
   </sql>
+  
+  <select id="getRolesByMenuId" resultMap="resultRoleMap" parameterType="java.lang.Long">
+    select r.* from role_menu rm left join role r on rm.`role_id` = r.`id` where rm.`menu_id`=#{id}
+  </select>
+  <select id="getMenusByRoleId" resultMap="resultMenuMap" parameterType="java.lang.Long">
+    select m.* from role_menu rm left join menu m on rm.`menu_id` = m.`id` where rm.`role_id`=#{id}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
